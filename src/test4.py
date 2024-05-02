@@ -74,39 +74,40 @@ class StockAlgorithm:
                 trading_bot_methods.export_trades_to_csv(trades, directory, filename)
                 print(f"File saved to directory: {directory}")#how do i print a new line above here
 
-print("Welcome to Danti.")
-print("Please input your parameters here.\n")
-initial_drawdown_percent = float(input("Enter drawdown percent (e.g., 5 for 5%) here: "))
-initial_day_range = int(input("How many days until you would like to sell?: "))
 
-#stock_algo is the self, the self. is just changing the propreys or attributes of the object
-stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range) #how is this row here assigned\\\\ creating an instance of the class to use it in the program
-print()
-print("If you would like to update your parameters please type 'update' or type 'done' to finish.\n")
-print("Also if you would like to add multiple tickers to a list type 'add', then type 'run' to process all.\n")
 
-while True:
-    user_input = input('User choice here: ') #assign this user_input object a property
 
-    if user_input.lower() == 'update': #1st thought, check if the object has the property 'update' ##"If what sits inside that object(user_input) is the value 'update' do whats below."
-        UpdateData.update_stock_algo(stock_algo)
+def main():
+    print("Welcome to Danti.")
+    print("Please input your parameters.\n")
+    initial_drawdown_percent = float(input("Enter drawdown percent (e.g., 5 for 5%): "))
+    initial_day_range = int(input("How many days until you would like to sell?: "))
+    stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range)
+    print("\nOptions: 'update', 'add', 'run', 'done'")
 
-    elif user_input.lower() == 'add':
-        while True:
-            tickers_to_add = input("Tickers to add here (type 'finish' to stop.): ")
-            if tickers_to_add == 'finish':
-                print()
-                print("Please choose again what you would like to do.\n")
-                break
+    while True:
+        user_input = input('\nUser choice here: ').lower()
+
+        if user_input == 'update':
+            UpdateData.update_stock_algo(stock_algo)
+        elif user_input == 'add':
+            tickers = input("Enter tickers separated by comma (type 'finish' to stop): ")
+            if tickers.lower() == 'finish':
+                continue
+            tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
+            for ticker in tickers_to_add:
+                stock_algo.add_tickers_to_list(ticker)
+        elif user_input == 'run':
+            if not stock_algo.tickers:
+                print("No tickers added. Please add tickers first.")
             else:
-                stock_algo.add_tickers_to_list(tickers_to_add)
+                directory = input(r"Enter directory for saving all trade data: ")
+                stock_algo.process_all_tickers(directory)
+        elif user_input == 'done':
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid input. Available commands: 'update', 'add', 'run', 'done'.")
 
-    elif user_input.lower() == 'run':
-        stock_algo.process_all_tickers()
-
-    elif user_input.lower() == 'done':
-        break
-    
-    else:
-       stock_algo.process_stock(user_input)
-
+if __name__ == '__main__':
+    main()
