@@ -28,7 +28,6 @@ class StockAlgorithm:
         self.start_date = new_start_date
         self.end_date = new_end_date
 
-
     def add_tickers_to_list(self, ticker):
         if ticker not in self.tickers:
             self.tickers.append(ticker)
@@ -45,42 +44,15 @@ class StockAlgorithm:
             trading_bot_methods.export_trades_to_csv(trades, directory, filename)
             print(f"{ticker} data saved in {directory}") ##here i need to add automation to the process_stock method where if a list is invoked it runs all objects in the list without interuption
                                   ##such as no plotting the data or asking each time where to save the file, they all need to be passed to the same directory
+
     def need_method_here_to_process_only_list():
         pass
-    def process_stock(self, ticker):
-        stock_data = self.fetch_stock_data(ticker, self.start_date, self.end_date)
-        if stock_data.empty:
-            print("No data fetched. Check your stock symbol and date range.")
-        else:
-            trades = trading_bot_methods.backtest_strategy(stock_data, self.drawdown_percent, self.day_range)
-            if not trades:
-                print("No qualifying trades found.")
-            else:
-                total_profit = sum(trade[4] for trade in trades)
-                print(f"Total number of trades: {len(trades)}")
-                print(f"Total profit: {total_profit}")
-                while True:
-                    plot_y_n = input("Would you like to plot the data? Please enter yes or no: ")
-                    if plot_y_n.lower() == "yes":
-                        trading_bot_methods.plot_trades(stock_data, trades) ##add tickers to a list and process them all at once, give a directory for them all to be saved to. Not to be asked to save to a directory multiple times
-                        break
-                    elif plot_y_n.lower() == "no":
-                        break
-                    else:
-                        print("Incorrect input please try again.")
-                
-                filename = f"{ticker}_{self.drawdown_percent}%_{self.day_range}.csv"
-                directory = input(r"Enter directory here: ")
-                trading_bot_methods.export_trades_to_csv(trades, directory, filename)
-                print(f"File saved to directory: {directory}")#how do i print a new line above here
-
-
 
 
 def main():
     print("Welcome to Danti.")
     print("Please input your parameters.\n")
-    initial_drawdown_percent = float(input("Enter drawdown percent (e.g., 5 for 5%): "))
+    initial_drawdown_percent = float(input("Enter drawdown percent (e.g., 5 for 5%): \n"))
     initial_day_range = int(input("How many days until you would like to sell?: "))
     stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range)
     print("\nOptions: 'update', 'add', 'run', 'done'")
@@ -91,7 +63,7 @@ def main():
         if user_input == 'update':
             UpdateData.update_stock_algo(stock_algo)
         elif user_input == 'add':
-            tickers = input("Enter tickers separated by comma (type 'finish' to stop): ")
+            tickers = input("Enter tickers separated by comma (press 'enter' to stop): ")
             if tickers.lower() == 'finish':
                 continue
             tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
