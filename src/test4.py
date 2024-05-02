@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import UpdateData
 
-# Copyright Vincent Salter 02/12/23 2nd of December 2023
 
 class StockAlgorithm:
 
@@ -51,38 +50,48 @@ class StockAlgorithm:
             print(f"{ticker} data saved in {directory}") ##here i need to add automation to the process_stock method where if a list is invoked it runs all objects in the list without interuption
                                   ##such as no plotting the data or asking each time where to save the file, they all need to be passed to the same directory
 
+    def clear_all_tickers(self):
+        self.tickers = []
+        print("\nList of tickers cleared...\n")
+        print("Please choose again.")
 
 def main():
     print("\nWelcome to Danti.")
     print("Please input your parameters.\n")
     initial_drawdown_percent = trading_bot_methods.get_float_input("Enter drawdown percent (e.g., 5 for 5%): ")
-    initial_day_range = trading_bot_methods.get_int_input("How many days until you would like to sell?: ")
+    initial_day_range = trading_bot_methods.get_int_input("\nHow many days until you would like to sell?: ")
     stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range)
-    print("\nOptions: 'update', 'add', 'run', 'done'")
+    
 
     while True:
+        print("\nOptions: 'update', 'add', 'clear-list', 'run', 'done'")
         user_input = input('\nUser choice here: ').lower()
 
         if user_input == 'update':
             UpdateData.update_stock_algo(stock_algo)
+
         elif user_input == 'add':
-            tickers = input("Enter tickers separated by comma (press 'enter' to stop): ")
-            if tickers.lower() == 'finish':
-                continue
+            tickers = input("Enter tickers separated by only comma (press 'enter' to stop): ")
             tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
             for ticker in tickers_to_add:
                 stock_algo.add_tickers_to_list(ticker)
+
         elif user_input == 'run':
             if not stock_algo.tickers:
                 print("No tickers added. Please add tickers first.")
             else:
-                directory = input(r"Enter directory for saving all trade data: ")
+                print("\nEnter and existing directory or simply provide a new one and it will be created for you.")
+                directory = input(r"Directory for saving all trade data: ")
                 stock_algo.process_all_tickers(directory)
+
+        elif user_input == 'clear-list':
+            stock_algo.clear_all_tickers()
+
         elif user_input == 'done':
             print("Exiting the program.")
             break
         else:
-            print("Invalid input. Available commands: 'update', 'add', 'run', 'done'.")
+            print("Invalid input.")
 
 if __name__ == '__main__':
     main()
