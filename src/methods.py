@@ -50,6 +50,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
             if low_price <= open_price * (1 - drawdown_percent / 100):
                 buy_price = low_price
                 sell_date = index + timedelta(days=day_range)
+            ##    print(f"Buying at price: {buy_price} on {index}") 
                 if sell_date in stock_data.index:
                     sell_price = stock_data.loc[sell_date]['Close']
                     profit = sell_price - buy_price
@@ -57,3 +58,17 @@ class trading_bot_methods(): ## get rid of class, just use methods
                 else:
                     print(f"Target sell date is out of range for the data: {sell_date}")
         return trades
+    
+    def get_float_input(prompt):
+        while True:
+            try:
+                return float(input(prompt))
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+
+    def get_int_input(prompt):
+        while True:
+            try:
+                return int(input(prompt))
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")

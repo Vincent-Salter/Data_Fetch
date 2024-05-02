@@ -40,20 +40,23 @@ class StockAlgorithm:
             print(f"Processing {ticker}...")
             stock_data = self.fetch_stock_data(ticker, self.start_date, self.end_date)
             trades = trading_bot_methods.backtest_strategy(stock_data, self.drawdown_percent, self.day_range)
+            if not trades:
+                print("No qualifying trades found.")
+            else:
+                total_profit = sum(trade[4] for trade in trades)
+                print(f"Total number of trades: {len(trades)}")
+                print(f"Total profit: {total_profit}")
             filename = f"{ticker}_{self.drawdown_percent}%_{self.day_range}.csv"
             trading_bot_methods.export_trades_to_csv(trades, directory, filename)
             print(f"{ticker} data saved in {directory}") ##here i need to add automation to the process_stock method where if a list is invoked it runs all objects in the list without interuption
                                   ##such as no plotting the data or asking each time where to save the file, they all need to be passed to the same directory
 
-    def need_method_here_to_process_only_list():
-        pass
-
 
 def main():
-    print("Welcome to Danti.")
+    print("\nWelcome to Danti.")
     print("Please input your parameters.\n")
-    initial_drawdown_percent = float(input("Enter drawdown percent (e.g., 5 for 5%): \n"))
-    initial_day_range = int(input("How many days until you would like to sell?: "))
+    initial_drawdown_percent = trading_bot_methods.get_float_input("Enter drawdown percent (e.g., 5 for 5%): ")
+    initial_day_range = trading_bot_methods.get_int_input("How many days until you would like to sell?: ")
     stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range)
     print("\nOptions: 'update', 'add', 'run', 'done'")
 
