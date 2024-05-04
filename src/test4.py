@@ -1,11 +1,11 @@
 import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
-from testing_methods import UpdateData
-
+from testing_methods import update_stock_algo
 
 class StockAlgorithm:
 
+    ## main construction of the object
     def __init__(self, drawdown_percent, day_range):
         self.drawdown_percent = drawdown_percent
         self.day_range = day_range
@@ -13,27 +13,50 @@ class StockAlgorithm:
         self.end_date = datetime.now().strftime('%Y-%m-%d')
         self.tickers = []
 
+    ## what are the better ways to pull data, also need to build crypto program to reach more users
     def fetch_stock_data(self, stock_symbol, start_date, end_date):
         stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
         return stock_data
     
     def set_drawdown_percent(self, new_drawdown_percent):
-        self.drawdown_percent = new_drawdown_percent
+        try:
+            new_drawdown_percent = float(new_drawdown_percent)
+            if new_drawdown_percent <= 0:
+                print("Drawdown percent must be greater than 0.")
+            else:
+                self.drawdown_percent = new_drawdown_percent
+        except ValueError:
+            print("Invalid input for drawdown percent. Please enter a valid number.")
 
     def set_day_range(self, new_day_range):
-        self.day_range = new_day_range
+        try:
+            new_day_range = int(new_day_range)
+            if new_day_range <= 0:
+                print("Day range must be a positive integer.")
+            else:
+                self.day_range = new_day_range
+        except ValueError:
+            print("Invalid input for day range. Please enter a valid integer.")
 
     def set_date_range(self, new_start_date, new_end_date):
-        self.start_date = new_start_date
-        self.end_date = new_end_date
+            try:
+                new_start_date = datetime.strptime(new_start_date, '%Y-%m-%d')
+                new_end_date = datetime.strptime(new_end_date, '%Y-%m-%d')
+                if new_start_date > new_end_date:
+                    print("Start date cannot be after end date.")
+                else:
+                    self.start_date = new_start_date.strftime('%Y-%m-%d')
+                    self.end_date = new_end_date.strftime('%Y-%m-%d')
+                    print("\nDate range updated successfully.")
+            except ValueError:
+                print("Invalid date format. Please use YYYY-MM-DD format.")
 
     def add_tickers_to_list(self, ticker):
         if ticker not in self.tickers:
             self.tickers.append(ticker)
         else:
             print(f'{ticker} is already in the list.')
-            #can i add here a method that would add a list to the object if you wanted to pull multiple tickers add them to a list then process them all
-
+          
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
@@ -68,13 +91,19 @@ def main():
         user_input = input('\nUser choice here: ').lower()
 
         if user_input == 'update':
-            UpdateData.update_stock_algo(stock_algo)
+            update_stock_algo(stock_algo)
 
         elif user_input == 'add':
-            tickers = input("Enter tickers separated by only comma (press 'enter' to stop): ")
+            tickers = input("Enter tickers separated by only a comma (press 'enter' to stop): ")
             tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
             for ticker in tickers_to_add:
-                stock_algo.add_tickers_to_list(ticker)
+                if not ticker.isalpha() or len(ticker) > 5:
+                    print(f"Invalid ticker format: {ticker}. Tickers should be alphabetic and up to 5 characters long.")
+                elif ticker in stock_algo.tickers:
+                    print(f"{ticker} is already in the list.")
+                else:
+                    stock_algo.add_tickers_to_list(ticker)
+                    print(f"{ticker} added to the list.")
 
         elif user_input == 'run':
             if not stock_algo.tickers:
