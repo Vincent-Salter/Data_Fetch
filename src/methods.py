@@ -2,7 +2,7 @@
 import os
 import pandas as pd
 from datetime import timedelta
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 
 class trading_bot_methods(): ## get rid of class, just use methods
 

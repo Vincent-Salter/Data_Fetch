@@ -2,6 +2,9 @@ import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import update_stock_algo
+from pycoingecko import CoinGeckoAPI
+
+# Copyright Vincent Salter 02/12/23 2nd of May 2024
 
 class StockAlgorithm:
 
@@ -12,12 +15,34 @@ class StockAlgorithm:
         self.start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
         self.end_date = datetime.now().strftime('%Y-%m-%d')
         self.tickers = []
+        self.cg = CoinGeckoAPI()
 
+    def fetch_data(self, ticker):
+        if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
+            return self.fetch_crypto_data(ticker)
+        else:
+            return self.fetch_stock_data(ticker, self.start_date, self.end_date)
+        
     ## what are the better ways to pull data, also need to build crypto program to reach more users
     def fetch_stock_data(self, stock_symbol, start_date, end_date):
-        stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
-        return stock_data
-    
+        try:
+            stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
+            return stock_data
+        except Exception as e:
+            print(f"Error fetching data for {stock_symbol}: {e}")
+            return []
+        
+    ## beginning to test these methods
+    ## unlikely to be compatible until the dataframe is the same as fetching stock data 
+    def fetch_crypto_data(self, crypto):
+        try:
+            crypto_data = self.cg.get_coin_market_chart_by_id(id=crypto.lower(), vs_currency='usd', days='30')
+            return crypto_data['prices']  # Simplify to prices for uniformity, adjust as needed
+        except Exception as e:
+            print(f"Error fetching data for {crypto}: {e}")
+            return []
+        
+        
     def set_drawdown_percent(self, new_drawdown_percent):
         try:
             new_drawdown_percent = float(new_drawdown_percent)
@@ -60,7 +85,7 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            stock_data = self.fetch_stock_data(ticker, self.start_date, self.end_date)
+            stock_data = self.fetch_data(ticker)
             trades = trading_bot_methods.backtest_strategy(stock_data, self.drawdown_percent, self.day_range)
             if not trades:
                 print("No qualifying trades found.")
@@ -79,8 +104,7 @@ class StockAlgorithm:
         print("Please choose again.")
 
 def main():
-    print("\nWelcome to Danti.")
-    print("Please input your parameters.\n")
+    print("\nWelcome to Danti.\n")
     initial_drawdown_percent = trading_bot_methods.get_float_input("Enter drawdown percent (e.g., 5 for 5%): ")
     initial_day_range = trading_bot_methods.get_int_input("\nHow many days until you would like to sell?: ")
     stock_algo = StockAlgorithm(initial_drawdown_percent, initial_day_range)
@@ -121,6 +145,7 @@ def main():
             break
         else:
             print("Invalid input.")
+
 
 if __name__ == '__main__':
     main()
