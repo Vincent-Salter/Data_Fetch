@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import update_stock_algo
 from pycoingecko import CoinGeckoAPI
+import pandas as pd
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
@@ -34,13 +35,24 @@ class StockAlgorithm:
         
     ## beginning to test these methods
     ## unlikely to be compatible until the dataframe is the same as fetching stock data 
+    
     def fetch_crypto_data(self, crypto):
         try:
             crypto_data = self.cg.get_coin_market_chart_by_id(id=crypto.lower(), vs_currency='usd', days='30')
-            return crypto_data['prices']  # Simplify to prices for uniformity, adjust as needed
+            # Transform the list of prices into a DataFrame
+            df = pd.DataFrame(crypto_data['prices'], columns=['timestamp', 'Close'])
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df.set_index('timestamp', inplace=True)
+            
+            # Assuming the close price is also the open, high, and low for simplicity
+            df['Open'] = df['Close']
+            df['High'] = df['Close']
+            df['Low'] = df['Close']
+            df['Volume'] = 0  # Volume information may not be available in this dataset
+            return df
         except Exception as e:
             print(f"Error fetching data for {crypto}: {e}")
-            return []
+            return pd.DataFrame()
         
         
     def set_drawdown_percent(self, new_drawdown_percent):
@@ -85,8 +97,11 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            stock_data = self.fetch_data(ticker)
-            trades = trading_bot_methods.backtest_strategy(stock_data, self.drawdown_percent, self.day_range)
+            data = self.fetch_data(ticker)  # This should now always return a DataFrame
+            if data.empty:
+                print("No data fetched or no qualifying trades found.")
+                continue
+            trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
             if not trades:
                 print("No qualifying trades found.")
             else:
@@ -119,9 +134,10 @@ def main():
 
         elif user_input == 'add':
             tickers = input("Enter tickers separated by only a comma (press 'enter' to stop): ")
-            tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
+            if tickers.strip():
+                tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
             for ticker in tickers_to_add:
-                if not ticker.isalpha() or len(ticker) > 5:
+                if not (ticker.isalnum() and 1 <= len(ticker) <= 10):
                     print(f"Invalid ticker format: {ticker}. Tickers should be alphabetic and up to 5 characters long.")
                 elif ticker in stock_algo.tickers:
                     print(f"{ticker} is already in the list.")
