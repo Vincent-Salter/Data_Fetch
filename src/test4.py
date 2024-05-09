@@ -44,7 +44,7 @@ class StockAlgorithm:
             df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
             df.set_index('timestamp', inplace=True)
             
-            # Assuming the close price is also the open, high, and low for simplicity
+
             df['Open'] = df['Close']
             df['High'] = df['Close']
             df['Low'] = df['Close']
