@@ -2,7 +2,12 @@ import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import update_stock_algo
+<<<<<<< HEAD
 #from pycoingecko import CoinGeckoAPI
+=======
+from pycoingecko import CoinGeckoAPI
+import pandas as pd
+>>>>>>> 1d6045f37bc08a83951638fc4fa4a0029e20cb82
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
@@ -33,7 +38,29 @@ class StockAlgorithm:
         
     ## beginning to test these methods
     ## unlikely to be compatible until the dataframe is the same as fetching stock data 
+<<<<<<< HEAD
 
+=======
+    
+    def fetch_crypto_data(self, crypto):
+        try:
+            crypto_data = self.cg.get_coin_market_chart_by_id(id=crypto.lower(), vs_currency='usd', days='30')
+            # Transform the list of prices into a DataFrame
+            df = pd.DataFrame(crypto_data['prices'], columns=['timestamp', 'Close'])
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+            df.set_index('timestamp', inplace=True)
+            
+
+            df['Open'] = df['Close']
+            df['High'] = df['Close']
+            df['Low'] = df['Close']
+            df['Volume'] = 0  # Volume information may not be available in this dataset
+            return df
+        except Exception as e:
+            print(f"Error fetching data for {crypto}: {e}")
+            return pd.DataFrame()
+        
+>>>>>>> 1d6045f37bc08a83951638fc4fa4a0029e20cb82
         
     def set_drawdown_percent(self, new_drawdown_percent):
         try:
@@ -77,8 +104,11 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            stock_data = self.fetch_data(ticker)
-            trades = trading_bot_methods.backtest_strategy(stock_data, self.drawdown_percent, self.day_range)
+            data = self.fetch_data(ticker)  # This should now always return a DataFrame
+            if data.empty:
+                print("No data fetched or no qualifying trades found.")
+                continue
+            trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
             if not trades:
                 print("No qualifying trades found.")
             else:

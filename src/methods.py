@@ -1,8 +1,9 @@
-
 import os
 import pandas as pd
 from datetime import timedelta
 import matplotlib.pyplot as plt # type: ignore
+
+# Copyright Vincent Salter 02/12/23 2nd of May 2024
 
 class trading_bot_methods(): ## get rid of class, just use methods
 
