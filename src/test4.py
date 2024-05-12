@@ -97,7 +97,7 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            data = self.fetch_data(ticker)  # This should now always return a DataFrame
+            data = self.fetch_stock_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
             if data.empty:
                 print("No data fetched or no qualifying trades found.")
                 continue
