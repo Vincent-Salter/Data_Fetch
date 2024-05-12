@@ -2,8 +2,12 @@ import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import update_stock_algo
+<<<<<<< HEAD
+#from pycoingecko import CoinGeckoAPI
+=======
 from pycoingecko import CoinGeckoAPI
 import pandas as pd
+>>>>>>> 1d6045f37bc08a83951638fc4fa4a0029e20cb82
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
@@ -16,15 +20,14 @@ class StockAlgorithm:
         self.start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
         self.end_date = datetime.now().strftime('%Y-%m-%d')
         self.tickers = []
-        self.cg = CoinGeckoAPI()
+       # self.cg = CoinGeckoAPI()
 
     def fetch_data(self, ticker):
         if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
-            return self.fetch_crypto_data(ticker)
+            return 
         else:
             return self.fetch_stock_data(ticker, self.start_date, self.end_date)
-        
-    ## what are the better ways to pull data, also need to build crypto program to reach more users
+
     def fetch_stock_data(self, stock_symbol, start_date, end_date):
         try:
             stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
@@ -35,6 +38,9 @@ class StockAlgorithm:
         
     ## beginning to test these methods
     ## unlikely to be compatible until the dataframe is the same as fetching stock data 
+<<<<<<< HEAD
+
+=======
     
     def fetch_crypto_data(self, crypto):
         try:
@@ -54,6 +60,7 @@ class StockAlgorithm:
             print(f"Error fetching data for {crypto}: {e}")
             return pd.DataFrame()
         
+>>>>>>> 1d6045f37bc08a83951638fc4fa4a0029e20cb82
         
     def set_drawdown_percent(self, new_drawdown_percent):
         try:
