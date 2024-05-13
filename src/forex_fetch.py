@@ -42,3 +42,7 @@ class ForexData():
 forex_data = yf.download("EURUSD=X", start="2020-01-01", end="2020-12-31")
 forex_trades = ForexData.backtest_strategy(forex_data, drawdown_percent=1, day_range=6)
 print(pd.DataFrame(forex_trades, columns=['Buy Date', 'Buy Price', 'Sell Date', 'Sell Price', 'Long Profit']))
+
+
+
+## hello this is for jia and elle github desktop demo
