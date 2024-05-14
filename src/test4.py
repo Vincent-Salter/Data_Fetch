@@ -20,7 +20,7 @@ class StockAlgorithm:
 
     def fetch_data(self, ticker):
         if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
-            return 
+            return self.fetch_crypto_data(ticker)
         else:
             return self.fetch_stock_data(ticker, self.start_date, self.end_date)
 
@@ -43,15 +43,16 @@ class StockAlgorithm:
             df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
             df.set_index('timestamp', inplace=True)
             
-
             df['Open'] = df['Close']
             df['High'] = df['Close']
             df['Low'] = df['Close']
             df['Volume'] = 0  # Volume information may not be available in this dataset
-            return df
+            
+            trades_df = pd.DataFrame(columns=['Buy Date', 'Buy Price', 'Sell Date', 'Sell Price', 'Long Profit'])
+            return df, trades_df
         except Exception as e:
             print(f"Error fetching data for {crypto}: {e}")
-            return pd.DataFrame()
+            return pd.DataFrame(), pd.DataFrame()
         
         
     def set_drawdown_percent(self, new_drawdown_percent):
@@ -132,7 +133,7 @@ def main():
             update_stock_algo(stock_algo)
 
         elif user_input == 'add':
-            tickers = input("Enter tickers separated by only a comma (press 'enter' to stop): ")
+            tickers = input("Enter tickers (Forex format: 'EURUSD=X', Stock format: 'AAPL', Crypto format: 'bitcoin') separated by only a comma (press 'enter' to add): ")
             if tickers.strip():
                 tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
             for ticker in tickers_to_add:
