@@ -20,13 +20,13 @@ class StockAlgorithm:
 
     def fetch_data(self, ticker):
         if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
-            return self.fetch_crypto_data(ticker)
+            return self.fetch_crypto_data(ticker.lower())
         else:
             return self.fetch_stock_data(ticker, self.start_date, self.end_date)
 
-    def fetch_stock_data(self, stock_symbol, start_date, end_date):
+    def fetch_stock_data(self, stock_symbol):
         try:
-            stock_data = yf.download(stock_symbol, start=start_date, end=end_date)
+            stock_data = yf.download(stock_symbol, self.start_date, self.end_date)
             return stock_data
         except Exception as e:
             print(f"Error fetching data for {stock_symbol}: {e}")
@@ -97,7 +97,7 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            data = self.fetch_stock_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
+            data = self.fetch_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
             if data.empty:
                 print("No data fetched or no qualifying trades found.")
                 continue
@@ -133,17 +133,19 @@ def main():
             update_stock_algo(stock_algo)
 
         elif user_input == 'add':
-            tickers = input("Enter tickers (Forex format: 'EURUSD=X', Stock format: 'AAPL', Crypto format: 'bitcoin') separated by only a comma (press 'enter' to add): ")
+            tickers = input("Enter tickers (Stock format: 'AAPL', Crypto format: 'bitcoin') separated by only a comma (press 'enter' to add): ")
             if tickers.strip():
                 tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
-            for ticker in tickers_to_add:
-                if not (ticker.isalnum() and 1 <= len(ticker) <= 10):
-                    print(f"Invalid ticker format: {ticker}. Tickers should be alphabetic and up to 5 characters long.")
-                elif ticker in stock_algo.tickers:
-                    print(f"{ticker} is already in the list.")
-                else:
-                    stock_algo.add_tickers_to_list(ticker)
-                    print(f"{ticker} added to the list.")
+                for ticker in tickers_to_add:
+                    if not (ticker.isalpha() and 1 <= len(ticker) <= 5) and not (ticker.endswith('=X') or ticker.isalpha()):
+                        print(f"Invalid ticker format: {ticker}. Tickers should be alphabetic and up to 5 characters long.")
+                    elif ticker in stock_algo.tickers:
+                        print(f"{ticker} is already in the list.")
+                    else:
+                        stock_algo.add_tickers_to_list(ticker)
+                        print(f"{ticker} added to the list.")
+                        stock_data = stock_algo.fetch_data(ticker)
+                       
 
         elif user_input == 'run':
             if not stock_algo.tickers:
