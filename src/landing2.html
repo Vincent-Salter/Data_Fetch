@@ -1,3 +1,213 @@
-<html>
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANTI - Stocks and Crypto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+    body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.logo-name {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.company-name {
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.menu-item.active {
+    background-color: #004c7a;
+}
+
+.tagline {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.analysis-button {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.analysis-button button {
+    padding: 10px 20px;
+    background-color: #004c7a;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.defi-section, .chart-section {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 48%;
+}
+
+.defi-section h2, .chart-section h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.positive {
+    color: #00ff00;
+}
+
+.negative {
+    color: #ff0000;
+}
+
+.chart-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.chart-buttons button {
+    background-color: #004c7a;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chart-placeholder {
+    background-color: #222;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    border-radius: 10px;
+}
+
+</style>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-name">
+                <div class="logo">[LOGO]</div>
+                <div class="company-name">DANTEI</div>
+            </div>
+            <div class="menu">
+                <span class="menu-item">STOCKS</span>
+                <span class="menu-item active">CRYPTO</span>
+            </div>
+        </header>
+        <main>
+            <div class="tagline">TAGLINE</div>
+            <div class="analysis-button">
+                <button>START ANALYSIS</button>
+            </div>
+            <section class="content">
+                <div class="defi-section">
+                    <h2>Popular DEFI</h2>
+                    <table>
+                        <tr>
+                            <th>Stock</th>
+                            <th>Price (GBP)</th>
+                            <th>Day Change</th>
+                        </tr>
+                        <tr>
+                            <td>BTC</td>
+                            <td>48,808.61</td>
+                            <td class="positive">+268.29 +0.55%</td>
+                        </tr>
+                        <tr>
+                            <td>ETH</td>
+                            <td>2,339.36</td>
+                            <td class="positive">+16.28 +0.70%</td>
+                        </tr>
+                        <tr>
+                            <td>USDT</td>
+                            <td>0.80</td>
+                            <td class="positive">+0.00 +0.44%</td>
+                        </tr>
+                        <tr>
+                            <td>BNB</td>
+                            <td>476.33</td>
+                            <td class="positive">+8.11 +1.73%</td>
+                        </tr>
+                        <tr>
+                            <td>ADA</td>
+                            <td>0.35</td>
+                            <td class="negative">-0.0055 -1.54%</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="chart-section">
+                    <h2>ADA</h2>
+                    <div class="chart-buttons">
+                        <button>1D</button>
+                        <button>5D</button>
+                        <button>1M</button>
+                        <button>6M</button>
+                        <button>YTD</button>
+                        <button>1Y</button>
+                        <button>5Y</button>
+                    </div>
+                    <div class="chart-placeholder">TEMP FILLER IMG</div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
 </html>
