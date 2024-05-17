@@ -49,9 +49,12 @@ header {
 }
 
 .menu-item {
+    display: inline-block;
     cursor: pointer;
     padding: 10px 20px;
     border-radius: 20px;
+    text-decoration: none; 
+    color: #fff; 
 }
 
 .menu-item.active {
@@ -120,12 +123,17 @@ th, td {
 }
 
 .chart-buttons button {
-    background-color: #22546d;
-    color: #fff;
+    background-color: #eef1fe;
+    color: #000;
     border: none;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.chart-buttons button.selected{
+    background-color: #22546d;
+    color: #fff;
 }
 
 .chart-placeholder {
@@ -214,8 +222,8 @@ th, td {
                 <div class="company-name">DANTEI</div>
             </div>
             <div class="menu">
-                <span class="menu-item">STOCKS</span>
-                <span class="menu-item active">CRYPTO</span>
+                <a href=index.html class="menu-item">STOCKS</a>
+                <a href=landing2.html class="menu-item active">CRYPTO</a>
             </div>
         </header>
         <main>
@@ -310,6 +318,15 @@ th, td {
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
 }
+    document.addEventListener('DOMContentLoaded', function() {
+                const buttons = document.querySelectorAll('.chart-buttons button');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        buttons.forEach(btn => btn.classList.remove('selected'));
+                        button.classList.add('selected');
+                    });
+                });
+            });
     </script>
 
 </body>

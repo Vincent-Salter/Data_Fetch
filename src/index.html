@@ -28,9 +28,19 @@ header {
     padding: 20px 0;
 }
 
+.logo-name {
+    display: flex;
+    align-items: center;
+}
+
 .logo {
     font-size: 24px;
     font-weight: bold;
+}
+
+.company-name {
+    font-size: 24px;
+    margin-left: 10px;
 }
 
 .menu {
@@ -39,9 +49,12 @@ header {
 }
 
 .menu-item {
+    display: inline-block;
     cursor: pointer;
     padding: 10px 20px;
     border-radius: 20px;
+    text-decoration: none; 
+    color: #fff; 
 }
 
 .menu-item.active {
@@ -209,8 +222,8 @@ th, td {
                 <div class="company-name">DANTEI</div>
             </div>
             <div class="menu">
-                <span class="menu-item active">STOCKS</span>
-                <span class="menu-item">CRYPTO</span>
+                <a href=index.html class="menu-item active">STOCKS</a>
+                <a href=landing2.html class="menu-item">CRYPTO</a>
             </div>
         </header>
         <main>
