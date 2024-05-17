@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANTI - Stocks and Crypto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<style>
+    body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.menu-item.active {
+    background-color: #004c7a;
+}
+
+.tagline {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.analysis-button {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.analysis-button button {
+    padding: 10px 20px;
+    background-color: #004c7a;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.defi-section, .chart-section {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: 48%;
+}
+
+.defi-section h2, .chart-section h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.positive {
+    color: #00ff00;
+}
+
+.negative {
+    color: #ff0000;
+}
+
+.chart-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.chart-buttons button {
+    background-color: #004c7a;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chart-placeholder {
+    background-color: #222;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    border-radius: 10px;
+}
+
+</style>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">[LOGO]</div>
+            <div class="menu">
+                <span class="menu-item active">STOCKS</span>
+                <span class="menu-item">CRYPTO</span>
+            </div>
+        </header>
+        <main>
+            <div class="tagline">TAGLINE</div>
+            <div class="analysis-button">
+                <button>START ANALYSIS</button>
+            </div>
+            <section class="content">
+                <div class="stock-section">
+                    <h2>Popular Stocks</h2>
+                    <table>
+                        <tr>
+                            <th>Stock</th>
+                            <th>Price (GBX)</th>
+                            <th>Day Change</th>
+                        </tr>
+                        <tr>
+                            <td>LLOY</td>
+                            <td>54.30</td>
+                            <td class="positive">+036 +0.67%</td>
+                        </tr>
+                        <tr>
+                            <td>VOD</td>
+                            <td>69.40</td>
+                            <td class="positive">+1.32 +1.94%</td>
+                        </tr>
+                        <tr>
+                            <td>BP.</td>
+                            <td>506.20</td>
+                            <td class="positive">+2.10 +0.42%</td>
+                        </tr>
+                        <tr>
+                            <td>BARC</td>
+                            <td>213.95</td>
+                            <td class="positive">+0.70 +0.33%</td>
+                        </tr>
+                        <tr>
+                            <td>IAG</td>
+                            <td>1.81</td>
+                            <td class="negative">-1.60 -0.88%</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="chart-section">
+                    <h2>LLOY</h2>
+                    <div class="chart-buttons">
+                        <button>1D</button>
+                        <button>5D</button>
+                        <button>1M</button>
+                        <button>6M</button>
+                        <button>YTD</button>
+                        <button>1Y</button>
+                        <button>5Y</button>
+                    </div>
+                    <div class="chart-placeholder">TEMP FILLER IMG</div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
