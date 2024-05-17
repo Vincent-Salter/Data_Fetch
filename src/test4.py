@@ -97,7 +97,7 @@ class StockAlgorithm:
     def process_all_tickers(self, directory):
         for ticker in self.tickers:
             print(f"Processing {ticker}...")
-            data = self.fetch_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
+            data = self.fetch_stock_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
             if data.empty:
                 print("No data fetched or no qualifying trades found.")
                 continue
@@ -112,6 +112,24 @@ class StockAlgorithm:
             trading_bot_methods.export_trades_to_csv(trades, directory, filename)
             print(f"{ticker} data saved in {directory}") ##here i need to add automation to the process_stock method where if a list is invoked it runs all objects in the list without interuption
                                   ##such as no plotting the data or asking each time where to save the file, they all need to be passed to the same directory
+
+    def process_selling(self, directory):
+        for ticker in self.tickers:
+            print(f"Processing {ticker}...")
+            data = self.fetch_stock_data(ticker)
+            if data.empty:
+                print("No data fetched or no qualifying trades found.")
+                continue
+            trades = trading_bot_methods.backtest_selling_strategy(data, self.drawdown_percent, self.day_range)
+            if not trades:
+                print("No qualifying trades found.")
+            else:
+                total_profit = sum(trade[4] for trade in trades)
+                print(f"Total number of trades: {len(trades)}")
+                print(f"Total profit: {total_profit}")
+            filename = f"{ticker}_{self.drawdown_percent}%_{self.day_range}.csv"
+            trading_bot_methods.export_trades_to_csv(trades, directory, filename)
+            print(f"{ticker} data saved in {directory}") 
 
     def clear_all_tickers(self):
         self.tickers = []
@@ -144,9 +162,7 @@ def main():
                     else:
                         stock_algo.add_tickers_to_list(ticker)
                         print(f"{ticker} added to the list.")
-                        stock_data = stock_algo.fetch_data(ticker)
-                       
-
+                        
         elif user_input == 'run':
             if not stock_algo.tickers:
                 print("No tickers added. Please add tickers first.")
@@ -154,6 +170,14 @@ def main():
                 print("\nEnter and existing directory or simply provide a new one and it will be created for you.")
                 directory = input(r"Directory for saving all trade data: ")
                 stock_algo.process_all_tickers(directory)
+
+        elif user_input == 'sell':
+            if not stock_algo.tickers:
+                print("No tickers added. Please add tickers first.")
+            else:
+                print("\nEnter and existing directory or simply provide a new one and it will be created for you.")
+                directory = input(r"Directory for saving all trade data: ")
+                stock_algo.process_selling(directory)
 
         elif user_input == 'clear-list':
             stock_algo.clear_all_tickers()
