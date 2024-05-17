@@ -133,12 +133,81 @@ th, td {
     border-radius: 10px;
 }
 
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    color: #000;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+}
+
+.popup-content label {
+    display: block;
+    margin-top: 10px;
+}
+
+.popup-content input, .popup-content select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.popup-content button {
+    padding: 10px 20px;
+    background-color: #22546d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 </style>
 
 <body>
     <div class="container">
         <header>
-            <div class="logo">[LOGO]</div>
+            <div class="logo-name">
+                <div class="logo">[LOGO]</div>
+                <div class="company-name">DANTEI</div>
+            </div>
             <div class="menu">
                 <span class="menu-item active">STOCKS</span>
                 <span class="menu-item">CRYPTO</span>
@@ -147,7 +216,7 @@ th, td {
         <main>
             <div class="tagline">TAGLINE</div>
             <div class="analysis-button">
-                <button>START ANALYSIS</button>
+                <button onclick="openPopup()">START ANALYSIS</button>
             </div>
             <section class="content">
                 <div class="stock-section">
@@ -201,6 +270,33 @@ th, td {
             </section>
         </main>
     </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Enter Analysis Details</h2>
+            <form>
+                <label for="Stock">What stock do you want to track?</label>
+                <input type="text" id="Stock" name="Stock" required>
+
+                <label for="drawdown">Enter your drawdown %</label>
+                <input type="number" id="drawdown" name="drawdown" step="0.01" required>
+
+                <label for="days">In how many days do you want to sell?</label>
+                <input type="number" id="days" name="days" required>
+
+                <label for="action">Choose action:</label>
+                <select id="action" name="action">
+                    <option value="buy">Buy</option>
+                    <option value="sell">Sell</option>
+                    <option value="hold">Hold</option>
+                </select>
+
+                <button type="submit">START ANALYSIS</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.chart-buttons button');
@@ -211,6 +307,13 @@ th, td {
                 });
             });
         });
+        function openPopup() {
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
     </script>
 </body>
 </html>
