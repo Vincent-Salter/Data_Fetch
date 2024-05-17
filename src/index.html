@@ -45,7 +45,7 @@ header {
 }
 
 .menu-item.active {
-    background-color: #004c7a;
+    background-color: #22546d;
 }
 
 .tagline {
@@ -61,7 +61,7 @@ header {
 
 .analysis-button button {
     padding: 10px 20px;
-    background-color: #004c7a;
+    background-color: #22546d;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -74,14 +74,14 @@ header {
     gap: 20px;
 }
 
-.defi-section, .chart-section {
+.stock-section, .chart-section {
     background-color: #111;
     padding: 20px;
     border-radius: 10px;
     width: 48%;
 }
 
-.defi-section h2, .chart-section h2 {
+.stock-section h2, .chart-section h2 {
     margin-top: 0;
 }
 
@@ -110,12 +110,17 @@ th, td {
 }
 
 .chart-buttons button {
-    background-color: #004c7a;
-    color: #fff;
+    background-color: #eef1fe;
+    color: #000;
     border: none;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.chart-buttons button.selected{
+    background-color: #22546d;
+    color: #fff;
 }
 
 .chart-placeholder {
@@ -196,5 +201,16 @@ th, td {
             </section>
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.chart-buttons button');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
