@@ -82,7 +82,7 @@
         <div class="popup-content">
             <span class="close" onclick="closePopup()">&times;</span>
             <h2>Enter Analysis Details</h2>
-            <form>
+            <form id="stockForm">
                 <label for="Stock">What stock do you want to track?</label>
                 <input type="text" id="Stock" name="Stock" required>
 
@@ -99,7 +99,7 @@
                     <option value="hold">Hold</option>
                 </select>
 
-                <button type="submit">START ANALYSIS</button>
+                <button type="submit" onclick="submitForm(event)">START ANALYSIS</button>
             </form>
         </div>
     </div>

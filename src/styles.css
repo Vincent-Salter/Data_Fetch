@@ -201,3 +201,29 @@ th, td {
     text-decoration: none;
     cursor: pointer;
 } 
+/* Style for the back button container: analysis.html */
+.button-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Style for the button */
+.back-button {
+    background-color: transparent;
+    color: #fff; 
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Style for the left arrow icon */
+.back-button::before {
+    content: "\2190";
+    margin-right: 5px;
+}
