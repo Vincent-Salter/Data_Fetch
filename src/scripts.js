@@ -53,7 +53,10 @@ function submitForm(event) {
         }
         
         // Call setStockName() function when DOM content is fully loaded
-        document.addEventListener('DOMContentLoaded', setStockName);
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded event fired');
+            setStockName();
+        });
         
         // Add event listener to the back button
         const backButton = document.getElementById('backButton');

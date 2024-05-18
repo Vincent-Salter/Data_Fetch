@@ -102,6 +102,7 @@ class StockAlgorithm:
                 print("No data fetched or no qualifying trades found.")
                 continue
             trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
+            trading_bot_methods.plot_trades(data, trades) ##this is where the data is plotted, currently just for demonstration purposes
             if not trades:
                 print("No qualifying trades found.")
             else:
@@ -144,7 +145,7 @@ def main():
     
 
     while True:
-        print("\nOptions: 'update', 'add', 'clear-list', 'run', 'done'")
+        print("\nOptions: 'update', 'add', 'clear-list', 'sell', 'run', 'done'")
         user_input = input('\nUser choice here: ').lower()
 
         if user_input == 'update':
@@ -179,6 +180,7 @@ def main():
                 directory = input(r"Directory for saving all trade data: ")
                 stock_algo.process_selling(directory)
 
+    
         elif user_input == 'clear-list':
             stock_algo.clear_all_tickers()
 

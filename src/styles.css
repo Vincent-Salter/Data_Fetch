@@ -74,7 +74,17 @@ header {
 .content {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
+    align-items: flex-start;
+}
+.container2{
+    display: flex;
+    justify-content: column;
+}
+
+.container-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .stock-section, .chart-section {
@@ -82,10 +92,28 @@ header {
     padding: 20px;
     border-radius: 10px;
     width: 48%;
+    margin-bottom: 20px;
 }
 
 .stock-section h2, .chart-section h2 {
     margin-top: 0;
+}
+
+.box-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 20px;
+    flex-grow: 1;
+}
+
+.box {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    width: calc(48% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 table {
