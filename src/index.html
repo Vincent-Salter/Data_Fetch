@@ -16,71 +16,13 @@
                 <div class="company-name">DANTEI</div>
             </div>
             <div class="menu">
-                <a href=index.html class="menu-item active">STOCKS</a>
-                <a href=landing2.html class="menu-item">CRYPTO</a>
+                <span class="menu-item active">STOCKS</span>
+                <span class="menu-item">CRYPTO</span>
             </div>
         </header>
-        <main>
-            <div class="tagline">TAGLINE</div>
-            <div class="analysis-button">
-                <button onclick="openPopup()">START ANALYSIS</button>
-            </div>
-            <section class="content">
-                <div class="stock-section">
-                    <h2>Popular Stocks</h2>
-                    <table>
-                        <tr>
-                            <th>Stock</th>
-                            <th>Price (GBX)</th>
-                            <th>Day Change</th>
-                        </tr>
-                        <tr>
-                            <td>LLOY</td>
-                            <td>54.30</td>
-                            <td class="positive">+036 +0.67%</td>
-                        </tr>
-                        <tr>
-                            <td>VOD</td>
-                            <td>69.40</td>
-                            <td class="positive">+1.32 +1.94%</td>
-                        </tr>
-                        <tr>
-                            <td>BP.</td>
-                            <td>506.20</td>
-                            <td class="positive">+2.10 +0.42%</td>
-                        </tr>
-                        <tr>
-                            <td>BARC</td>
-                            <td>213.95</td>
-                            <td class="positive">+0.70 +0.33%</td>
-                        </tr>
-                        <tr>
-                            <td>IAG</td>
-                            <td>1.81</td>
-                            <td class="negative">-1.60 -0.88%</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="chart-section">
-                    <h2>LLOY</h2>
-                    <div class="chart-buttons">
-                        <button>1D</button>
-                        <button>5D</button>
-                        <button>1M</button>
-                        <button>6M</button>
-                        <button>YTD</button>
-                        <button>1Y</button>
-                        <button>5Y</button>
-                    </div>
-                    <div class="chart-placeholder">TEMP FILLER IMG</div>
-                </div>
-            </section>
-        </main>
     </div>
-
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closePopup()">&times;</span>
+    <section class="content">
+        <div class="analysis-form">
             <h2>Enter Analysis Details</h2>
             <form id="stockForm">
                 <label for="Stock">What stock do you want to track?</label>
@@ -99,9 +41,14 @@
                     <option value="hold">Hold</option>
                 </select>
 
-                <button type="submit" onclick="submitForm(event)">START ANALYSIS</button>
+                <div class="analysis-button">
+                    <button type="submit" onclick="submitForm(event)">START ANALYSIS</button>
+                </div>
             </form>
         </div>
-    </div>
+        <div class="analysis-results">
+            <h2>Results</h2>
+        </div>
+    </section>
 </body>
-</html> 
+</html>
