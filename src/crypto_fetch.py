@@ -27,4 +27,3 @@ cg = CryptoData("bitcoin")
 
 print(cg.process_data())
 print(cg.fetch_historical_data())
-#travlled to italy 
