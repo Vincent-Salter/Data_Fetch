@@ -1,12 +1,12 @@
 import requests
-from flask import Flask, rendertemplate
+from flask import Flask, render_template
 
-app = Flask(name)
+app = Flask(__name__)
 
-stocksymbols = ['AAPL','GOOGL','MSFT','NVDA','TSLA']
-stockdata = {}
+stock_symbols = ['AAPL','GOOGL','MSFT','NVDA','TSLA']
+stock_data = {}
 
-def fetchstock_data(symbol):
+def fetch_stock_data(symbol):
     api_key = 'UPRXJ0H5LBB4BKLM'
     url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}'
     r = requests.get(url)
@@ -32,5 +32,5 @@ def index():
     stock_data = [fetch_stock_data(stock) for stock in stock_symbols]
     return render_template('index.html', stock_symbols=stock_data)
 
-if __name == '__main':
+if __name__ == '__main__':
     app.run(debug=True)
