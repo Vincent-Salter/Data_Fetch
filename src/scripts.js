@@ -29,6 +29,3 @@ function openPopup() {
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
 }
-
-//API Data
-const apiKey = '18LjE9K8L83T29Dme8VBHARXUHg4X4qT';
