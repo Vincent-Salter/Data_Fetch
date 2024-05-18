@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANTI - Stocks and Crypto</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/everviz@1.2.1/dist/everviz.min.js"></script>
+    <script src="scripts.js" defer></script>
 </head>
 
 <body>
@@ -16,8 +17,8 @@
                 <div class="company-name">DANTI</div>
             </div>
             <div class="menu">
-                <a href=index.html class="menu-item">STOCKS</a>
-                <a href=landing2.html class="menu-item active">CRYPTO</a>
+                <a href="index.html" class="menu-item">STOCKS</a>
+                <a href="landing2.html" class="menu-item active">CRYPTO</a>
             </div>
         </header>
         <main>
@@ -29,36 +30,16 @@
                 <div class="stock-section">
                     <h2>Popular DEFI</h2>
                     <table>
-                        <tr>
-                            <th>Crypto</th>
-                            <th>Price (GBP)</th>
-                            <th>Day Change</th>
-                        </tr>
-                        <tr>
-                            <td>BTC</td>
-                            <td>48,808.61</td>
-                            <td class="positive">+268.29 +0.55%</td>
-                        </tr>
-                        <tr>
-                            <td>ETH</td>
-                            <td>2,339.36</td>
-                            <td class="positive">+16.28 +0.70%</td>
-                        </tr>
-                        <tr>
-                            <td>USDT</td>
-                            <td>0.80</td>
-                            <td class="positive">+0.00 +0.44%</td>
-                        </tr>
-                        <tr>
-                            <td>BNB</td>
-                            <td>476.33</td>
-                            <td class="positive">+8.11 +1.73%</td>
-                        </tr>
-                        <tr>
-                            <td>ADA</td>
-                            <td>0.35</td>
-                            <td class="negative">-0.0055 -1.54%</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Crypto</th>
+                                <th>Price (GBP)</th>
+                                <th>Day Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be populated here -->
+                        </tbody>
                     </table>
                 </div>
                 <div class="chart-section">
@@ -72,7 +53,7 @@
                         <button>1Y</button>
                         <button>5Y</button>
                     </div>
-                    <div class="chart-placeholder">TEMP FILLER IMG</div>
+                    <div id="chart" class="chart-placeholder"></div>
                 </div>
             </section>
         </main>
@@ -103,6 +84,5 @@
             </form>
         </div>
     </div>
-    
 </body>
 </html>
