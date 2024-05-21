@@ -42,12 +42,31 @@
                 </select>
 
                 <div class="analysis-button">
-                    <button type="submit" onclick="submitForm(event)">START ANALYSIS</button>
+                    <button type="submit">START ANALYSIS</button>
                 </div>
             </form>
         </div>
         <div class="analysis-results">
             <h2>Results</h2>
+            <div class="table-container">
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Buy Date</th>
+                            <th>Buy Price</th>
+                            <th>Sell Date</th>
+                            <th>Sell Price</th>
+                            <th>Long Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows added dynamically by js -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="save-button">
+                <button type="button" onclick="saveCSV()">SAVE CSV</button>
+            </div>
         </div>
     </section>
 </body>

@@ -68,6 +68,8 @@ header {
     width: 100%;
     color: #fff;
     margin-left: 50px;
+    min-height: 45%;
+    max-height: 65%;
 }
 
 .analysis-form h2 {
@@ -108,22 +110,83 @@ header {
     transition: background-color 0.3s ease;
 }
 
-.analysis-button button:hover {
-    background-color: #22546d;
-}
-
 .analysis-results {
     background-color: #111;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    max-width: 65%;
     width: 100%;
     color: #fff;
     margin-left: 50px;
+    min-height: 45%;
+    max-height: 45%;
+    position: relative;
 }
 
 .analysis-results h2 {
     margin-top: 0;
     color: #fff;
+}
+
+.table-container{
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10%;
+}
+
+/* Table styles */
+.analysis-results table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+/* Table header styles */
+.analysis-results th {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+/* Table body styles */
+.analysis-results td {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+/* Table row hover effect */
+.analysis-results tr:hover {
+    background-color: #222;
+}
+
+/* Align text within table cells */
+.analysis-results td, .analysis-results th {
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* Table spacing */
+.analysis-results table, .analysis-results th, .analysis-results td {
+    border: 1px solid #444;
+}
+
+.save-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10%;
+}
+
+.save-button button {
+    padding: 10px 20px;
+    background-color: #22546d;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
