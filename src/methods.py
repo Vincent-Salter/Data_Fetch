@@ -96,7 +96,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
                     print(f"Target sell date is out of range for the data: {sell_date}")
         return trades
     
-    def forex_backtest_selling_strategy():
+    def forex_backtest_selling_strategy(stock_data, drawdown_percent, day_range):
         trades = []
         for index, row in stock_data.iterrows():
             open_price = row['Open']
@@ -106,8 +106,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
                 buy_date = index + timedelta(days=day_range)
                 # Adjust buy_date if it falls on a weekend (Forex market closed)
                 while buy_date.weekday() > 4:
-
-        pass
+                    return []
 
     def get_float_input(prompt):
         while True:

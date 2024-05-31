@@ -4,8 +4,12 @@ from methods import trading_bot_methods
 from testing_methods import update_stock_algo
 from pycoingecko import CoinGeckoAPI
 import pandas as pd
+import requests
+from flask import Flask, render_template
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
+
+app = Flask(__name__)
 
 class StockAlgorithm:
 
@@ -18,12 +22,18 @@ class StockAlgorithm:
         self.tickers = []
         self.cg = CoinGeckoAPI()
 
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+
+    
     def fetch_data(self, ticker):
         if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
             return self.fetch_crypto_data(ticker.lower())
         else:
             return self.fetch_stock_data(ticker, self.start_date, self.end_date)
-
+        
+    @app.route('/download', methods=['POST'])
     def fetch_stock_data(self, stock_symbol):
         try:
             stock_data = yf.download(stock_symbol, self.start_date, self.end_date)
@@ -193,3 +203,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    app.run(debug=True)
