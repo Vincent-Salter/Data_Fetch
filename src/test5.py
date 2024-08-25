@@ -53,15 +53,18 @@ def index():
 
 @app.route('/run-backtest', methods=['POST'])
 def run_backtest():
+    
     company = request.form['company']
     drawdown = float(request.form['drawdown'])
     days = int(request.form['days'])
+
+    print(f"Downloading {company} data...")
 
     stock_algo = StockAlgorithm(drawdown, days)
     stock_algo.add_tickers_to_list(company)
     results = stock_algo.process_all_tickers()
 
-    return jsonify(results)
+    return render_template('results.html', results=results)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
