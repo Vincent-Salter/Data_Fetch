@@ -2,14 +2,13 @@ import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
 from testing_methods import update_stock_algo
-from pycoingecko import CoinGeckoAPI
 import pandas as pd
-import requests
-from flask import Flask, render_template, request, jsonify
+
+
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
-app = Flask(__name__)
+
 
 class StockAlgorithm:
 
@@ -20,22 +19,9 @@ class StockAlgorithm:
         self.start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
         self.end_date = datetime.now().strftime('%Y-%m-%d')
         self.tickers = []
-        self.cg = CoinGeckoAPI()
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
-
-    
-    def fetch_data(self, ticker):
-        if ticker.lower() in ['bitcoin', 'ethereum', 'solana', 'bnb', 'xrp', 'usdc']:  # You can expand this list
-            return self.fetch_crypto_data(ticker.lower())
-        else:
-            return self.fetch_stock_data(ticker, self.start_date, self.end_date)
-        
-    @app.route('/api/data', methods=['GET', 'POST'])
+   
+  
     def fetch_stock_data(self, stock_symbol):
-        if request.method == "GET":
             try:
                 stock_data = yf.download(stock_symbol, self.start_date, self.end_date)
                 return stock_data
@@ -46,25 +32,6 @@ class StockAlgorithm:
     ## beginning to test these methods
     ## unlikely to be compatible until the dataframe is the same as fetching stock data 
     
-    def fetch_crypto_data(self, crypto):
-        try:
-            crypto_data = self.cg.get_coin_market_chart_by_id(id=crypto.lower(), vs_currency='usd', days='30')
-            # Transform the list of prices into a DataFrame
-            df = pd.DataFrame(crypto_data['prices'], columns=['timestamp', 'Close'])
-            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-            df.set_index('timestamp', inplace=True)
-            
-            df['Open'] = df['Close']
-            df['High'] = df['Close']
-            df['Low'] = df['Close']
-            df['Volume'] = 0  # Volume information may not be available in this dataset
-            
-            trades_df = pd.DataFrame(columns=['Buy Date', 'Buy Price', 'Sell Date', 'Sell Price', 'Long Profit'])
-            return df, trades_df
-        except Exception as e:
-            print(f"Error fetching data for {crypto}: {e}")
-            return pd.DataFrame(), pd.DataFrame()
-        
         
     def set_drawdown_percent(self, new_drawdown_percent):
         try:
@@ -203,4 +170,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    app.run(debug=True)
