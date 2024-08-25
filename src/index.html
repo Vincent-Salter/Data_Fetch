@@ -3,71 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANTI - Stocks and Crypto</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js"></script>
+    <title>Stock Backtest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c2c2c;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0px 0px 10px #000000;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
-        <header>
-            <div class="logo-name">
-                <div class="logo">[LOGO]</div>
-                <div class="company-name">DANTEI</div>
-            </div>
-            <div class="menu">
-                <span class="menu-item active">STOCKS</span>
-                <span class="menu-item">CRYPTO</span>
-            </div>
-        </header>
+        <h2>Run Backtest</h2>
+        <form id="backtestForm" action="/run-backtest" method="POST">
+            <label for="company">Company Name:</label>
+            <input type="text" id="company" name="company" placeholder="Enter company name" required>
+<label for="drawdown">Drawdown %:</label>
+            <input type="number" id="drawdown" name="drawdown" step="0.01" placeholder="Enter drawdown percentage" required>
+
+            <label for="days">Day Range:</label>
+            <input type="number" id="days" name="days" placeholder="Enter day range" required>
+
+            <button type="submit">Run</button>
+        </form>
     </div>
-    <section class="content">
-        <div class="analysis-form">
-            <h2>Enter Analysis Details</h2>
-            <form id="stockForm">
-                <label for="Stock">What stock do you want to track?</label>
-                <input type="text" id="Stock" name="Stock" required>
-
-                <label for="drawdown">Enter your drawdown %</label>
-                <input type="number" id="drawdown" name="drawdown" step="0.01" required>
-
-                <label for="days">In how many days do you want to sell?</label>
-                <input type="number" id="days" name="days" required>
-
-                <label for="action">Choose action:</label>
-                <select id="action" name="action">
-                    <option value="buy">Buy</option>
-                    <option value="sell">Sell</option>
-                    <option value="hold">Hold</option>
-                </select>
-
-                <div class="analysis-button">
-                    <button type="submit">START ANALYSIS</button>
-                </div>
-            </form>
-        </div>
-        <div class="analysis-results">
-            <h2>Results</h2>
-            <div class="table-container">
-                <table id="resultsTable">
-                    <thead>
-                        <tr>
-                            <th>Buy Date</th>
-                            <th>Buy Price</th>
-                            <th>Sell Date</th>
-                            <th>Sell Price</th>
-                            <th>Long Profit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows added dynamically by js -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="save-button">
-                <button type="button" onclick="saveCSV()">SAVE CSV</button>
-            </div>
-        </div>
-    </section>
 </body>
 </html>

@@ -5,7 +5,7 @@ from testing_methods import update_stock_algo
 from pycoingecko import CoinGeckoAPI
 import pandas as pd
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
@@ -33,15 +33,16 @@ class StockAlgorithm:
         else:
             return self.fetch_stock_data(ticker, self.start_date, self.end_date)
         
-    @app.route('/download', methods=['POST'])
+    @app.route('/api/data', methods=['GET', 'POST'])
     def fetch_stock_data(self, stock_symbol):
-        try:
-            stock_data = yf.download(stock_symbol, self.start_date, self.end_date)
-            return stock_data
-        except Exception as e:
-            print(f"Error fetching data for {stock_symbol}: {e}")
-            return []
-        
+        if request.method == "GET":
+            try:
+                stock_data = yf.download(stock_symbol, self.start_date, self.end_date)
+                return stock_data
+            except Exception as e:
+                print(f"Error fetching data for {stock_symbol}: {e}")
+                return []
+            
     ## beginning to test these methods
     ## unlikely to be compatible until the dataframe is the same as fetching stock data 
     
@@ -112,7 +113,6 @@ class StockAlgorithm:
                 print("No data fetched or no qualifying trades found.")
                 continue
             trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
-            trading_bot_methods.plot_trades(data, trades) ##this is where the data is plotted, currently just for demonstration purposes
             if not trades:
                 print("No qualifying trades found.")
             else:

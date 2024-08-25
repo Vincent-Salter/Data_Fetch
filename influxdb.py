@@ -1,30 +1,45 @@
-from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client import InfluxDBClient, Point, WritePrecision, WriteOptions
 
-# Define your InfluxDB connection parameters
-token = "your_influxdb_token"
-org = "your_organization"
-bucket = "your_bucket"
-url = "http://localhost:8086"  # Change to your InfluxDB instance URL
 
-# Initialize the InfluxDB client
+
+token = "hEypMj9nalLVjF7eyFi40Td2EGsQ6JdpKYR9FnaNiYjuhSmEGYUa6ZNqxI6yADYKmhwvnBFCXF06bhpReqkLSw=="
+org = "Danti"
+bucket = "data_fetch"
+url = "https://eu-central-1-1.aws.cloud2.influxdata.com"  
+
+
 client = InfluxDBClient(url=url, token=token, org=org)
 write_api = client.write_api(write_options=WriteOptions(batch_size=1))
 
-# Example data to write
 data_points = [
-    {"measurement": "temperature", "tags": {"location": "room1"}, "fields": {"value": 23.5}, "time": "2024-08-04T00:00:00Z"},
-    {"measurement": "temperature", "tags": {"location": "room2"}, "fields": {"value": 22.1}, "time": "2024-08-04T01:00:00Z"},
-    {"measurement": "humidity", "tags": {"location": "room1"}, "fields": {"value": 45.0}, "time": "2024-08-04T00:00:00Z"},
-    {"measurement": "humidity", "tags": {"location": "room2"}, "fields": {"value": 50.0}, "time": "2024-08-04T01:00:00Z"}
+    {
+        "time": "2024-08-16T12:00:00Z",
+        "tags": {"location": "xxxx"},
+        "fields": {"value": 425.5}
+    },
+    {
+        "time": "2024-08-16T12:00:00Z",
+        "tags": {"location": "penarthmandem"},
+        "fields": {"value": 4552.5}
+    },
+
+      {
+        "time": "2024-08-16T12:00:00Z",
+        "tags": {"location": "iphone"},
+        "fields": {"value": 1000}
+    }
 ]
 
-# Write data points to InfluxDB using a for loop
+
+
+
 for data_point in data_points:
-    point = Point(data_point["measurement"]) \
+    point = Point("measurement_name") \
         .tag("location", data_point["tags"]["location"]) \
         .field("value", data_point["fields"]["value"]) \
         .time(data_point["time"], WritePrecision.NS)
     write_api.write(bucket=bucket, org=org, record=point)
 
-# Close the client
+
+write_api.close()
 client.close()
