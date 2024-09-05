@@ -1,44 +1,44 @@
 from influxdb_client import InfluxDBClient, Point, WritePrecision, WriteOptions
+import os
+import csv
+from datetime import datetime, timedelta
 
 
 
-token = "hEypMj9nalLVjF7eyFi40Td2EGsQ6JdpKYR9FnaNiYjuhSmEGYUa6ZNqxI6yADYKmhwvnBFCXF06bhpReqkLSw=="
+token = "8luTGcM4rMkDcTH6KuQG2oXnUdsFYnOHcU-kvPNSGUvhK54AQ2Wo5TeHObFuNLRIVxBODau0PcMgsS6K2nDMWg=="
 org = "Danti"
-bucket = "data_fetch"
+bucket = "trading"
 url = "https://eu-central-1-1.aws.cloud2.influxdata.com"  
 
 
 client = InfluxDBClient(url=url, token=token, org=org)
 write_api = client.write_api(write_options=WriteOptions(batch_size=1))
 
-data_points = [
-    {
-        "time": "2024-08-16T12:00:00Z",
-        "tags": {"location": "xxxx"},
-        "fields": {"value": 425.5}
-    },
-    {
-        "time": "2024-08-16T12:00:00Z",
-        "tags": {"location": "penarthmandem"},
-        "fields": {"value": 4552.5}
-    },
-
-      {
-        "time": "2024-08-16T12:00:00Z",
-        "tags": {"location": "iphone"},
-        "fields": {"value": 1000}
-    }
-]
 
 
+directory = "/Users/vincentsalter/Documents/GitHub/Data_Fetch/src/data"
 
-
-for data_point in data_points:
-    point = Point("measurement_name") \
-        .tag("location", data_point["tags"]["location"]) \
-        .field("value", data_point["fields"]["value"]) \
-        .time(data_point["time"], WritePrecision.NS)
-    write_api.write(bucket=bucket, org=org, record=point)
+time_offset = timedelta(365)
+for filename in os.listdir(directory):
+    if filename.endswith(".csv"):
+        file_path = os.path.join(directory, filename)
+            
+        with open(file_path, mode='r') as file:
+            csv_reader = csv.DictReader(file)
+                
+            for row in csv_reader:
+                buy_date = datetime.strptime(row["Buy Date"], "%Y-%m-%d") + time_offset
+                sell_date = datetime.strptime(row["Sell Date"], "%Y-%m-%d") + time_offset
+                
+                # Create a point for each row in the CSV
+                point = Point("trades") \
+                    .field("Buy Price", float(row["Buy Price"])) \
+                    .field("Sell Price", float(row["Sell Price"])) \
+                    .field("Long Profit", float(row["Long Profit"])) \
+                    .tag("Buy Date", buy_date)\
+                    .tag("Sell Date", sell_date)
+                
+                write_api.write(bucket=bucket, org=org, record=point)
 
 
 write_api.close()

@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from test4 import StockAlgorithm
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
 class UpdateData:
