@@ -1,8 +1,6 @@
 import yfinance as yf
 from datetime import datetime, timedelta
 from methods import trading_bot_methods
-from testing_methods import update_stock_algo
-import pandas as pd
 
 
 
@@ -126,20 +124,17 @@ def main():
         user_input = input('\nUser choice here: ').lower()
 
         if user_input == 'update':
-            update_stock_algo(stock_algo)
+                    pass
 
         elif user_input == 'add':
-            tickers = input("Enter tickers (Stock format: 'AAPL', Crypto format: 'bitcoin') separated by only a comma (press 'enter' to add): ")
-            if tickers.strip():
-                tickers_to_add = [ticker.strip().upper() for ticker in tickers.split(',')]
-                for ticker in tickers_to_add:
-                    if not (ticker.isalpha() and 1 <= len(ticker) <= 5) and not (ticker.endswith('=X') or ticker.isalpha()):
-                        print(f"Invalid ticker format: {ticker}. Tickers should be alphabetic and up to 5 characters long.")
-                    elif ticker in stock_algo.tickers:
-                        print(f"{ticker} is already in the list.")
-                    else:
-                        stock_algo.add_tickers_to_list(ticker)
-                        print(f"{ticker} added to the list.")
+             while True:
+                tickers_to_add = input("Ticker here: ")
+                if tickers_to_add == 'finish':
+                    print()
+                    print("Choose again.\n")
+                    break
+                else:
+                    stock_algo.add_tickers_to_list(tickers_to_add)
                         
         elif user_input == 'run':
             if not stock_algo.tickers:

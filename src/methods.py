@@ -51,7 +51,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
             if low_price <= open_price * (1 - drawdown_percent / 100):
                 buy_price = low_price
                 sell_date = index + timedelta(days=day_range)
-            ##    print(f"Buying at price: {buy_price} on {index}") 
+                print(f"Buying at price: {buy_price} on {index}") 
                 if sell_date in stock_data.index:
                     sell_price = stock_data.loc[sell_date]['Close']
                     profit = sell_price - buy_price
