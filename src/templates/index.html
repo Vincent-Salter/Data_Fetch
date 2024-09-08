@@ -51,6 +51,11 @@
         button:hover {
             background-color: #0056b3;
         }
+        .grafana-graph {
+            margin-top: 20px;
+            width: 100%;
+            height: 400px; /* Adjust the height as needed */
+        }
     </style>
 </head>
 <body>
@@ -59,14 +64,18 @@
         <form id="backtestForm" action="/run-backtest" method="POST">
             <label for="company">Company Name:</label>
             <input type="text" id="company" name="company" placeholder="Enter company name" required>
-<label for="drawdown">Drawdown %:</label>
+            
+            <label for="drawdown">Drawdown %:</label>
             <input type="number" id="drawdown" name="drawdown" step="0.01" placeholder="Enter drawdown percentage" required>
-
+            
             <label for="days">Day Range:</label>
             <input type="number" id="days" name="days" placeholder="Enter day range" required>
-
+            
             <button type="submit">Run</button>
         </form>
+
+        <!-- Grafana Graph Embed 
+        <iframe class="grafana-graph" src="YOUR_GRAFANA_EMBED_URL_HERE" frameborder="0"></iframe>-->
     </div>
 </body>
 </html>

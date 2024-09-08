@@ -78,6 +78,7 @@ class StockAlgorithm:
                 print("No data fetched or no qualifying trades found.")
                 continue
             trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
+            print(trades)
             if not trades:
                 print("No qualifying trades found.")
             else:
