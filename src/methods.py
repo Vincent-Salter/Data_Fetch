@@ -23,7 +23,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
         ax1.scatter(buy_dates, stock_data.loc[buy_dates, 'Close'], color='green', label='Buy Points')
         ax1.scatter(sell_dates, stock_data.loc[sell_dates, 'Close'], color='red', label='Sell Points')
 
-        # Instantiating a second y-axis to plot cumulative profit
+        
         ax2 = ax1.twinx()
         ax2.set_ylabel('Cumulative Profit')
         cumulative_profit = [sum(t[4] for t in trades if t[0] <= date) for date in stock_data.index]
@@ -68,7 +68,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
             if high_price >= open_price * (1 + drawdown_percent / 100):
                 sell_price = high_price
                 buy_date = index + timedelta(days=day_range)
-                # Adjust buy_date if it falls on a weekend (market closed)
+                
                 if buy_date in stock_data.index:
                     buy_price = stock_data.loc[buy_date]['Close']
                     profit = (sell_price - buy_price) / buy_price * 100  # profit as percentage
@@ -85,12 +85,12 @@ class trading_bot_methods(): ## get rid of class, just use methods
             if low_price <= open_price * (1 - drawdown_percent / 100):
                 buy_price = low_price
                 sell_date = index + timedelta(days=day_range)
-                # Adjust sell_date if it falls on a weekend (Forex market closed)
-                while sell_date.weekday() > 4:  # 5 = Saturday, 6 = Sunday
+               
+                while sell_date.weekday() > 4: 
                     sell_date += timedelta(days=1)
                 if sell_date in stock_data.index:
                     sell_price = stock_data.loc[sell_date]['Close']
-                    profit = (sell_price - buy_price) / buy_price * 100  # profit as percentage
+                    profit = (sell_price - buy_price) / buy_price * 100 
                     trades.append((index, buy_price, sell_date, sell_price, profit))
                 else:
                     print(f"Target sell date is out of range for the data: {sell_date}")
@@ -104,7 +104,7 @@ class trading_bot_methods(): ## get rid of class, just use methods
             if high_price >= open_price * (1 + drawdown_percent / 100):
                 sell_price = high_price
                 buy_date = index + timedelta(days=day_range)
-                # Adjust buy_date if it falls on a weekend (Forex market closed)
+               
                 while buy_date.weekday() > 4:
                     return []
 

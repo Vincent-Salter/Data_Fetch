@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        /* Style for the side menu */
+        .sidenav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #111;
+            padding-top: 20px;
+        }
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidenav a:hover {
+            background-color: #575757;
+        }
+        /* Main content area */
+        .main {
+            margin-left: 260px; /* Space for the sidenav */
+            padding: 20px;
+            width: calc(100% - 260px);
+        }
+        .gallery {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .gallery img {
+            max-width: 300px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        /* Modal styles for image zoom */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            padding-top: 60px; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8); 
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%; 
+            max-width: 700px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Side navigation -->
+    <div class="sidenav">
+        <a href="#" onclick="showPortfolio('vincent')">Vincent's Portfolio</a>
+        <a href="#" onclick="showPortfolio('jia')">Jia's Portfolio</a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main">
+        <h1>Portfolio Viewer</h1>
+        <div id="portfolio" class="gallery">
+            <!-- Images will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Modal for Zoomed Image -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="imgZoomed">
+    </div>
+
+    <script>
+        // Define the portfolios
+        const portfolios = {
+            vincent: [
+                'Assets/IMG_3371.png',
+                'Assets/IMG_3372.png',
+                'Assets/IMG_3373.png'
+            ],
+            jia: [
+                'Assets/pic4.png',
+                'Assets/pic4.png',
+                'Assets/pic5.png'
+            ]
+        };
+
+        // Function to show the portfolio images based on the selected name
+        function showPortfolio(name) {
+            const gallery = document.getElementById('portfolio');
+            gallery.innerHTML = '';  // Clear current images
+
+            // Get the selected portfolio images
+            const images = portfolios[name];
+
+            // Create image elements and append them to the gallery
+            images.forEach(imageSrc => {
+                const imgElement = document.createElement('img');
+                imgElement.src = imageSrc;
+                imgElement.alt = name + ' portfolio image';
+                imgElement.onclick = function() {
+                    openModal(imageSrc);
+                };
+                gallery.appendChild(imgElement);
+            });
+        }
+
+        // Function to open the modal and show the clicked image
+        function openModal(imgSrc) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("imgZoomed");
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        // Show Vincent's portfolio by default when the page loads
+        showPortfolio('vincent');
+    </script>
+
+</body>
+</html>

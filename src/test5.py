@@ -51,6 +51,10 @@ class StockAlgorithm:
 def index():
     return render_template('index.html')
 
+@app.route('/portfolio')
+def run_portfolio():
+    return render_template('portfolio.html')
+
 @app.route('/run-backtest', methods=['POST'])
 def run_backtest():
     
