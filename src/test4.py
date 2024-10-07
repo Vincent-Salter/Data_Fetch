@@ -75,10 +75,9 @@ class StockAlgorithm:
             print(f"Processing {ticker}...")
             data = self.fetch_stock_data(ticker)  # Currently only fetching stock data while developing fetching crypto and forex
             if data.empty:
-                print("No data fetched or no qualifying trades found.")
+                #print("No data fetched or no qualifying trades found.")
                 continue
             trades = trading_bot_methods.backtest_strategy(data, self.drawdown_percent, self.day_range)
-            print(trades)
             if not trades:
                 print("No qualifying trades found.")
             else:

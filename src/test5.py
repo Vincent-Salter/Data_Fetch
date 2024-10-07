@@ -70,20 +70,5 @@ def run_backtest():
 
     return render_template('results.html', results=results)
 
-@app.route('/update-algo_object', methods=['POST'])
-def update_algo_object():
-
-    company = request.form['company']
-    drawdown = float(request.form['drawdown'])
-    days = int(request.form['days'])
-
-    print("Updating algo object...")
-
-    update_stock_algo()
-
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
