@@ -55,6 +55,16 @@ def index():
 def run_portfolio():
     return render_template('portfolio.html')
 
+@app.route('/run_update', methods=['POST'])
+def run_update():
+
+    company = request.form['company']
+    drawdown = float(request.form['drawdown'])
+    days = int(request.form['days'])
+
+    print(f"Updating {company} data...")
+
+    
 @app.route('/run-backtest', methods=['POST'])
 def run_backtest():
     
