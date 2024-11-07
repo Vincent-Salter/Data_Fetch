@@ -50,5 +50,27 @@
         {% endif %}
         <a href="/">Run Another Backtest</a>
     </div>
+    <table class="table-list">
+        <tr>
+            <td class="listem_item"></td>
+            <td class="listem_item"></td>
+            <td class="listem_item"></td>
+            <td class="listem_item"></td>
+        </tr>
+    </table>
+</body>
+<div class="container">
+    <h2>Update Data</h2>
+    <form action="/run_update" method="post">
+        <label for="company">Company:</label>
+        <input type="text" id="company" name="company" required>
+        <label for="drawdown">Drawdown:</label>
+        <input type="text" id="drawdown" name="drawdown" required>
+        <label for="days">Days:</label>
+        <input type="text" id="days" name="days" required>
+        <button type="submit">Update</button>
+    </form>
+</div>
+
 </body>
 </html>

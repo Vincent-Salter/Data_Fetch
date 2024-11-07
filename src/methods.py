@@ -1,123 +1,52 @@
 import os
 import pandas as pd
-from datetime import timedelta
-import matplotlib.pyplot as plt # type: ignore
+from datetime import timedelta, datetime
+import logging
+from typing import List, Tuple
 
 # Copyright Vincent Salter 02/12/23 2nd of May 2024
 
 class trading_bot_methods(): ## get rid of class, just use methods
 
-    def plot_trades(stock_data, trades):
-        # Create a figure and a set of subplots
-        fig, ax1 = plt.subplots()
-
-        # Plotting stock price
-        ax1.set_xlabel('Date')
-        ax1.set_ylabel('Price')
-        ax1.plot(stock_data['Close'], color='tab:blue', label='Stock Price')
-        ax1.tick_params(axis='y')
-
-        # Highlighting trade dates
-        buy_dates = [trade[0] for trade in trades]
-        sell_dates = [trade[2] for trade in trades]
-        ax1.scatter(buy_dates, stock_data.loc[buy_dates, 'Close'], color='green', label='Buy Points')
-        ax1.scatter(sell_dates, stock_data.loc[sell_dates, 'Close'], color='red', label='Sell Points')
-
-        
-        ax2 = ax1.twinx()
-        ax2.set_ylabel('Cumulative Profit')
-        cumulative_profit = [sum(t[4] for t in trades if t[0] <= date) for date in stock_data.index]
-        ax2.plot(stock_data.index, cumulative_profit, color='tab:orange', label='Cumulative Profit')
-        ax2.tick_params(axis='y')
-
-        fig.tight_layout()
-        fig.legend(loc='upper left')
-        plt.show()
-
     def export_trades_to_csv(trades, directory, filename):
-        if not filename.endswith(".csv"):
-            filename += ".csv"
-        filepath = os.path.join(directory, filename)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        trades_df = pd.DataFrame(trades, columns=['Buy Date', 'Buy Price', 'Sell Date', 'Sell Price', 'Long Profit'])
-        trades_df.to_csv(filepath, index=False)
+            if not filename.endswith(".csv"):
+                filename += ".csv"
+            filepath = os.path.join(directory, filename)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            trades_df = pd.DataFrame(trades, columns=['Buy Date', 'Buy Price', 'Sell Date', 'Sell Price', 'Long Profit'])
+            trades_df.to_csv(filepath, index=False)
 
-    def backtest_strategy(stock_data, drawdown_percent, day_range):
+    def backtest_strategy(stock_data: pd.DataFrame, drawdown_percent: float, day_range: int) -> List[Tuple[datetime, float, datetime, float, float]]:
+        """
+        Backtest a trading strategy where stocks are bought on a drawdown and sold after a specified number of days.
+
+        ... [Full docstring as above]
+        """
+        logger = logging.getLogger(__name__)
+        required_columns = ['Open', 'Low', 'Close']
+        
+        if not all(col in stock_data.columns for col in required_columns):
+            raise ValueError(f"Missing required columns: {', '.join([col for col in required_columns if col not in stock_data.columns])}")
+        
+        if not isinstance(stock_data.index, pd.DatetimeIndex):
+            raise TypeError("The index of stock_data must be a DatetimeIndex.")
+        
         trades = []
-        for index, row in stock_data.iterrows():
-            open_price = row['Open']
-            low_price = row['Low']
-            if low_price <= open_price * (1 - drawdown_percent / 100):
-                buy_price = low_price
-                sell_date = index + timedelta(days=day_range)
-                print(f"Buying at price: {buy_price} on {index}") 
-                if sell_date in stock_data.index:
-                    sell_price = stock_data.loc[sell_date]['Close']
-                    profit = sell_price - buy_price
-                    trades.append((index, buy_price, sell_date, sell_price, profit))
-                else:
-                    print(f"Target sell date is out of range for the data: {sell_date}")
-        return trades
-    
-    def backtest_selling_strategy(stock_data, drawdown_percent, day_range):
-        trades = []
-        for index, row in stock_data.iterrows():
-            open_price = row['Open']
-            high_price = row['High']
-            if high_price >= open_price * (1 + drawdown_percent / 100):
-                sell_price = high_price
-                buy_date = index + timedelta(days=day_range)
+        drawdowns = stock_data[stock_data['Low'] <= stock_data['Open'] * (1 - drawdown_percent / 100)]
+        
+        for index, row in drawdowns.iterrows():
+            buy_price = row['Low']
+            sell_date = index + timedelta(days=day_range)
+            
+            try:
+                sell_index = stock_data.index.get_indexer([sell_date], method='nearest')[0]
+                sell_price = stock_data.iloc[sell_index]['Close']
+                profit = sell_price - buy_price
                 
-                if buy_date in stock_data.index:
-                    buy_price = stock_data.loc[buy_date]['Close']
-                    profit = (sell_price - buy_price) / buy_price * 100  # profit as percentage
-                    trades.append((buy_date, buy_price, index, sell_price, profit))
-                else:
-                    print(f"Target buy date is out of range for the data: {buy_date}")
+                trades.append((index, buy_price, sell_date, sell_price, profit))
+                logger.debug(f"Trade: Bought at {buy_price} on {index}, Sold at {sell_price} on {sell_date}")
+            except KeyError:
+                logger.info(f"Target sell date {sell_date} not found in the dataset or too far in the future.")
+        
         return trades
-    
-    def forex_backtest_strategy(stock_data, drawdown_percent, day_range):
-        trades = []
-        for index, row in stock_data.iterrows():
-            open_price = row['Open']
-            low_price = row['Low']
-            if low_price <= open_price * (1 - drawdown_percent / 100):
-                buy_price = low_price
-                sell_date = index + timedelta(days=day_range)
-               
-                while sell_date.weekday() > 4: 
-                    sell_date += timedelta(days=1)
-                if sell_date in stock_data.index:
-                    sell_price = stock_data.loc[sell_date]['Close']
-                    profit = (sell_price - buy_price) / buy_price * 100 
-                    trades.append((index, buy_price, sell_date, sell_price, profit))
-                else:
-                    print(f"Target sell date is out of range for the data: {sell_date}")
-        return trades
-    
-    def forex_backtest_selling_strategy(stock_data, drawdown_percent, day_range):
-        trades = []
-        for index, row in stock_data.iterrows():
-            open_price = row['Open']
-            high_price = row['Low']
-            if high_price >= open_price * (1 + drawdown_percent / 100):
-                sell_price = high_price
-                buy_date = index + timedelta(days=day_range)
-               
-                while buy_date.weekday() > 4:
-                    return []
-
-    def get_float_input(prompt):
-        while True:
-            try:
-                return float(input(prompt))
-            except ValueError:
-                print("Invalid input. Please enter a valid number.")
-
-    def get_int_input(prompt):
-        while True:
-            try:
-                return int(input(prompt))
-            except ValueError:
-                print("Invalid input. Please enter a valid integer.")
